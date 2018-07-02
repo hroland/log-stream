@@ -1,0 +1,15 @@
+{
+  "name": "log-stream",
+  "version": "1.0.0",
+  "description": "Simple Node WebSocket stream designed to deliver real-time API console and error logs",
+  "main": "index.js",
+  "scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"start": "node ."
+  },
+  "author": "Roland Horváth <hello@rolandhorvath.hu>",
+  "license": "ISC",
+  "dependencies": {
+    "ws": "^5.2.1"
+  }
+}
