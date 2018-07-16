@@ -1,10 +1,15 @@
 const fs = require('fs')
-const http = require('http')
+const https = require('https')
 const WebSocket = require('ws');
 const spawn = require('child_process').spawn
 const config = require('./config.json')
 
-const server = http.createServer(function(req, res){
+const privateKey = fs.readFileSync(config.privateKey, 'utf8')
+const certificate = fs.readFileSync(config.certificate, 'utf8')
+
+const credentials = { key: privateKey, cert: certificate }
+
+const server = https.createServer(credentials, function(req, res){
 	res.writeHead(200, {'Content-Type': 'text/html'})
 	res.write('Working', 'utf8');
   res.end();
