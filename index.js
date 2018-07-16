@@ -6,8 +6,13 @@ const config = require('./config.json')
 
 const privateKey = fs.readFileSync(config.privateKey, 'utf8')
 const certificate = fs.readFileSync(config.certificate, 'utf8')
+const ca = fs.readFileSync(config.ca, 'utf8')
 
-const credentials = { key: privateKey, cert: certificate }
+const credentials = {
+	ca: ca,
+	key: privateKey,
+	cert: certificate
+}
 
 const server = https.createServer(credentials, function(req, res){
 	res.writeHead(200, {'Content-Type': 'text/html'})
