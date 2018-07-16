@@ -1,8 +1,17 @@
 const fs = require('fs')
+const http = require('http')
 const WebSocket = require('ws');
 const spawn = require('child_process').spawn
 const config = require('./config.json')
-const ws = new WebSocket.Server({ port: config.port });
+
+const server = http.createServer(function(req, res){
+	res.writeHead(200, {'Content-Type': 'text/html'})
+	res.write('Working', 'utf8');
+  res.end();
+})
+server.listen(config.port)
+
+const ws = new WebSocket.Server({ server });
 
 ws.on('connection', (conn) => {
 
@@ -10,13 +19,13 @@ ws.on('connection', (conn) => {
 
 	config.files.forEach(file => {
 
-		let tail = spawn('tail', ['-f', file.path])
+		let tail = spawn('tail', ['-f', '-n', config.lines || 50, file.path])
 		
 		tail.stdout.on('data', function (data) {
 
 			let payload = { file: file.name, text: data.toString('utf-8') }
 			
-			if (conn.readyState == WebSocket.OPEN) {
+			if (conn.readyState === WebSocket.OPEN) {
 				conn.send(JSON.stringify(payload))
 			}
 		})
